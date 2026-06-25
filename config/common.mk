@@ -9,9 +9,6 @@ PRODUCT_SOURCE_ROOT_DIRS += -kernel/platform
 
 PRODUCT_BRAND ?= AetheriaOS
 
-PRODUCT_PACKAGES += \
-    AetheriaWalls
-
 ifeq ($(PRODUCT_GMS_CLIENTID_BASE),)
 PRODUCT_PRODUCT_PROPERTIES += \
     ro.com.google.clientidbase=android-google
@@ -140,7 +137,8 @@ TARGET_SCREEN_WIDTH ?= 1080
 TARGET_SCREEN_HEIGHT ?= 1920
 PRODUCT_PACKAGES += \
     bootanimation.zip \
-    bootanimation-dark.zip
+    bootanimation-dark.zip \
+    AetheriaWalls
 
 # Lineage interfaces
 PRODUCT_PACKAGES += \
