@@ -9,6 +9,9 @@ PRODUCT_SOURCE_ROOT_DIRS += -kernel/platform
 
 PRODUCT_BRAND ?= AetheriaOS
 
+PRODUCT_PACKAGES += \
+    AetheriaWalls
+
 ifeq ($(PRODUCT_GMS_CLIENTID_BASE),)
 PRODUCT_PRODUCT_PROPERTIES += \
     ro.com.google.clientidbase=android-google
