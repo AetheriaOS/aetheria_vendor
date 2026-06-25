@@ -41,19 +41,21 @@ PRODUCT_PRODUCT_PROPERTIES += \
     ro.aetheria.build.version=$(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR) \
     ro.aetheria.releasetype=$(AETHERIA_BUILDTYPE)
 
-# Official devices check
-AETHERIA_OFFICIAL_DEVICES_URL := https://raw.githubusercontent.com/AetheriaOS/aetheria_official_devices/main/$(AETHERIA_BUILD).json
+# Get GitHub username via SSH
+AETHERIA_GITHUB_USER := $(shell ssh -T git@github.com 2>&1 | grep -oP '(?<=Hi ).*(?=!)')
 
-AETHERIA_CHECK_OFFICIAL := $(shell curl -s -o /dev/null -w "%{http_code}" $(AETHERIA_OFFICIAL_DEVICES_URL))
+# Check against official devices JSON
+AETHERIA_OFFICIAL_JSON := $(shell curl -s https://raw.githubusercontent.com/AetheriaOS/aetheria_official_devices/main/$(AETHERIA_BUILD).json)
 
-ifeq ($(AETHERIA_CHECK_OFFICIAL), 200)
+AETHERIA_CHECK_USER := $(shell echo '$(AETHERIA_OFFICIAL_JSON)' | python3 -c "import sys,json; d=json.load(sys.stdin); print('match') if d.get('github_username')=='$(AETHERIA_GITHUB_USER)' else print('nomatch')" 2>/dev/null)
+
+ifeq ($(AETHERIA_CHECK_USER), match)
     AETHERIA_BUILDTYPE := OFFICIAL
+    AETHERIA_MAINTAINER := $(shell echo '$(AETHERIA_OFFICIAL_JSON)' | python3 -c "import sys,json; print(json.load(sys.stdin)['maintainer'])" 2>/dev/null)
 else
     AETHERIA_BUILDTYPE := UNOFFICIAL
+    AETHERIA_MAINTAINER := Unknown
 endif
-
-# Maintainer
-AETHERIA_MAINTAINER := $(shell curl -s $(AETHERIA_OFFICIAL_DEVICES_URL) | python3 -c "import sys,json; print(json.load(sys.stdin)['maintainer'])" 2>/dev/null || echo "Unknown")
 
 PRODUCT_PRODUCT_PROPERTIES += \
     ro.aetheria.maintainer=$(AETHERIA_MAINTAINER) \
