@@ -7,7 +7,7 @@ PRODUCT_SOURCE_ROOT_DIRS += -kernel/platform
 # Allow vendor prebuilt repos to exclude themselves from bp scanning
 -include $(sort $(wildcard vendor/*/*/exclude-bp.mk))
 
-PRODUCT_BRAND ?= LineageOS
+PRODUCT_BRAND ?= AetheriaOS
 
 ifeq ($(PRODUCT_GMS_CLIENTID_BASE),)
 PRODUCT_PRODUCT_PROPERTIES += \
@@ -52,10 +52,10 @@ PRODUCT_COPY_FILES += \
     vendor/aetheria/prebuilt/common/bin/backuptool.functions:install/bin/backuptool.functions
 
 PRODUCT_PACKAGES += \
-    50-lineage.sh
+    50-aetheria.sh
 
 PRODUCT_ARTIFACT_PATH_REQUIREMENT_ALLOWED_LIST += \
-    system/addon.d/50-lineage.sh
+    system/addon.d/50-aetheria.sh
 
 ifneq ($(strip $(AB_OTA_PARTITIONS) $(AB_OTA_POSTINSTALL_CONFIG)),)
 PRODUCT_COPY_FILES += \
