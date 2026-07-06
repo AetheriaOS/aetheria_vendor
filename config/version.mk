@@ -7,30 +7,6 @@ else
     AETHERIA_BUILD_DATE := $(shell date -u +%Y%m%d)
 endif
 
-# Random tagline
-AETHERIA_TAGLINES := \
-    "Where imagination meets the cosmos" \
-    "Beyond the horizon of possibility" \
-    "Crafted for those who dare to dream" \
-    "The universe in your hands" \
-    "Redefining the boundaries of Android" \
-    "Born from the stars, built for you" \
-    "Experience the art of pure Android" \
-    "Elevate your digital existence" \
-    "Forged in the depths of the aether" \
-    "A new dimension of Android freedom" \
-    "Precision crafted, endlessly refined" \
-    "Where performance meets elegance" \
-    "Unlock the full potential of your device" \
-    "Inspired by the cosmos, built for earth" \
-    "Light as air, powerful as the universe" \
-    "The OS that thinks beyond limits" \
-    "Crafted with love, powered by passion" \
-    "Your device, reimagined" \
-    "Seamless. Elegant. Aetheria." \
-    "Float above the ordinary"
-AETHERIA_TAGLINE := $(shell echo "$(AETHERIA_TAGLINES)" | tr ' ' '\n' | grep '"' | shuf -n 1 | tr -d '"')
-
 # Get GitHub username via SSH
 AETHERIA_GITHUB_USER := $(shell ssh -T git@github.com 2>&1 | grep -oP '(?<=Hi ).*(?=!)')
 
