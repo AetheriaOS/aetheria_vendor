@@ -65,4 +65,4 @@ PRODUCT_PRODUCT_PROPERTIES += \
     ro.aetheria.build.version=$(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR) \
     ro.aetheria.releasetype=$(AETHERIA_BUILDTYPE) \
     ro.aetheria.maintainer=$(AETHERIA_MAINTAINER) \
-    ro.aetheria.buildtype=$(AETHERIA_BUILDTYPE) \
+    ro.aetheria.buildtype=$(AETHERIA_BUILDTYPE)
