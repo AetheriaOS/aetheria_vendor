@@ -66,4 +66,3 @@ PRODUCT_PRODUCT_PROPERTIES += \
     ro.aetheria.releasetype=$(AETHERIA_BUILDTYPE) \
     ro.aetheria.maintainer=$(AETHERIA_MAINTAINER) \
     ro.aetheria.buildtype=$(AETHERIA_BUILDTYPE) \
-    ro.aetheria.tagline=$(AETHERIA_TAGLINE)
