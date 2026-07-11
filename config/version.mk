@@ -7,11 +7,12 @@ else
     AETHERIA_BUILD_DATE := $(shell date -u +%Y%m%d)
 endif
 
-# Get GitHub username via SSH
-AETHERIA_GITHUB_USER := $(shell ssh -T git@github.com 2>&1 | grep -oP '(?<=Hi ).*(?=!)')
+# Get GitHub username via SSH (non-interaktif, ada timeout)
+AETHERIA_GITHUB_USER := $(shell ssh -T -o BatchMode=yes -o ConnectTimeout=5 git@github.com 2>&1 | grep -oP '(?<=Hi ).*(?=!)')
 
 # Check against official devices JSON
-AETHERIA_OFFICIAL_JSON := $(shell curl -s https://raw.githubusercontent.com/AetheriaOS/aetheria_official_devices/main/$(AETHERIA_BUILD).json)
+AETHERIA_OFFICIAL_JSON := $(shell curl -sf --connect-timeout 5 https://raw.githubusercontent.com/AetheriaOS-Devices/aetheria_official_devices/main/$(AETHERIA_BUILD).json)
+
 AETHERIA_CHECK_USER := $(shell echo '$(AETHERIA_OFFICIAL_JSON)' | python3 -c "import sys,json; d=json.load(sys.stdin); print('match') if d.get('github_username')=='$(AETHERIA_GITHUB_USER)' else print('nomatch')" 2>/dev/null)
 
 ifeq ($(AETHERIA_CHECK_USER), match)
@@ -23,24 +24,10 @@ else
 endif
 
 # --- Maintainer avatar ---
-# Downloads the maintainer's avatar (declared in aetheria_official_devices/<codename>.json
-# as "avatar": "avatars/<github_username>.png") into the Settings app resource tree so
-# AetheriaAboutHeaderController can reference it as a fixed drawable name.
-# Falls back to the default AetheriaOS logo for unofficial builds, missing json entries,
-# missing avatar fields, or failed downloads.
-SETTINGS_AVATAR_DEST := packages/apps/Settings/res/drawable/ic_aetheria_maintainer_avatar.png
-SETTINGS_LOGO_SRC := packages/apps/Settings/res/drawable/ic_aetheria_logo.png
-
+# Avatar & overlay sudah statis lewat RRO package (aetheria_packages_apps_Maintainer,
+# di-sync via aetheria_products local manifest). Cukup include package-nya kalau official.
 ifeq ($(AETHERIA_BUILDTYPE), OFFICIAL)
-    AETHERIA_AVATAR_PATH := $(shell echo '$(AETHERIA_OFFICIAL_JSON)' | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('avatar',''))" 2>/dev/null)
-else
-    AETHERIA_AVATAR_PATH :=
-endif
-
-ifneq ($(AETHERIA_AVATAR_PATH),)
-    AETHERIA_AVATAR_FETCH := $(shell curl -sf -o $(SETTINGS_AVATAR_DEST) https://raw.githubusercontent.com/AetheriaOS/aetheria_official_devices/main/$(AETHERIA_AVATAR_PATH) || cp $(SETTINGS_LOGO_SRC) $(SETTINGS_AVATAR_DEST))
-else
-    AETHERIA_AVATAR_FETCH := $(shell cp $(SETTINGS_LOGO_SRC) $(SETTINGS_AVATAR_DEST))
+    PRODUCT_PACKAGES += AetheriaMaintainer$(AETHERIA_BUILD)
 endif
 
 AETHERIA_EXTRAVERSION :=
@@ -54,7 +41,6 @@ AETHERIA_VERSION_SUFFIX := $(AETHERIA_BUILD_DATE)-$(AETHERIA_BUILDTYPE)$(AETHERI
 
 # Internal version
 AETHERIA_VERSION := $(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR)-$(AETHERIA_VERSION_SUFFIX)
-
 # Display version
 AETHERIA_DISPLAY_VERSION := $(PRODUCT_VERSION_MAJOR)-$(AETHERIA_VERSION_SUFFIX)
 
