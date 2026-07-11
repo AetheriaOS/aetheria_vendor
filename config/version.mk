@@ -23,9 +23,7 @@ else
     AETHERIA_MAINTAINER := Unknown
 endif
 
-# --- Maintainer avatar ---
-# Avatar & overlay sudah statis lewat RRO package (aetheria_packages_apps_Maintainer,
-# di-sync via aetheria_products local manifest). Cukup include package-nya kalau official.
+# Maintainer avatar
 ifeq ($(AETHERIA_BUILDTYPE), OFFICIAL)
     PRODUCT_PACKAGES += AetheriaMaintainer$(AETHERIA_BUILD)
 endif
