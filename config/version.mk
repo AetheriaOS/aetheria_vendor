@@ -8,10 +8,10 @@ else
 endif
 
 # Get GitHub username via SSH (non-interaktif, ada timeout)
-AETHERIA_GITHUB_USER := $(shell ssh -T -o BatchMode=yes -o ConnectTimeout=5 git@github.com 2>&1 | grep -oP '(?<=Hi ).*(?=!)')
+AETHERIA_GITHUB_USER := $(shell ssh -T -o BatchMode=yes -o ConnectTimeout=5 git@github.com 2>&1 | /usr/bin/grep -oP '(?<=Hi ).*(?=!)')
 
 # Check against official devices JSON
-AETHERIA_OFFICIAL_JSON := $(shell curl -sf --connect-timeout 5 https://raw.githubusercontent.com/AetheriaOS-Devices/aetheria_official_devices/main/$(AETHERIA_BUILD).json)
+AETHERIA_OFFICIAL_JSON := $(shell /usr/bin/curl -sf --connect-timeout 5 https://raw.githubusercontent.com/AetheriaOS-Devices/aetheria_official_devices/main/$(AETHERIA_BUILD).json)
 
 AETHERIA_CHECK_USER := $(shell echo '$(AETHERIA_OFFICIAL_JSON)' | python3 -c "import sys,json; d=json.load(sys.stdin); print('match') if d.get('github_username')=='$(AETHERIA_GITHUB_USER)' else print('nomatch')" 2>/dev/null)
 
