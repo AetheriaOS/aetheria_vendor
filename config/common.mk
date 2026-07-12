@@ -320,5 +320,3 @@ PRODUCT_SOONG_NAMESPACES += \
     $(wildcard hardware/sony/*) \
     $(wildcard hardware/google)
 
-PRODUCT_SOURCE_ROOT_DIRS += \
-    $(foreach d,$(notdir $(wildcard hardware/qcom-caf/*)),$(if $(filter-out $(TARGET_BOARD_PLATFORM),$(d)),-hardware/qcom-caf/$(d)))
