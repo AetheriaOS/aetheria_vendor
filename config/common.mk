@@ -301,3 +301,8 @@ include vendor/aetheria/config/version.mk
 
 -include $(WORKSPACE)/build_env/image-auto-bits.mk
 -include vendor/aetheria/config/partner_gms.mk
+
+# Common QCOM WiFi HAL soong namespaces 
+PRODUCT_SOONG_NAMESPACES += \
+    hardware/qcom-caf/wlan \
+    hardware/qcom-caf/wlan/qcwcn
