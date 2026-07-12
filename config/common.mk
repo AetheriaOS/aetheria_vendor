@@ -306,31 +306,16 @@ PRODUCT_SOONG_NAMESPACES += \
     hardware/qcom-caf/wlan \
     hardware/qcom-caf/wlan/qcwcn
 
-# Xiaomi-only namespaces
-ifeq ($(PRODUCT_MANUFACTURER),Xiaomi)
+# Adaptive: match chipset-named subfolders (any brand)
+PRODUCT_SOONG_NAMESPACES += \
+    $(wildcard hardware/*/$(TARGET_BOARD_PLATFORM)) \
+    $(wildcard kernel/*/$(TARGET_BOARD_PLATFORM)) \
+    $(wildcard vendor/*/$(TARGET_BOARD_PLATFORM)) \
+    $(wildcard device/*/$(TARGET_BOARD_PLATFORM)-common)
+
+# Adaptive: match brand-level folders directly (e.g. hardware/xiaomi, hardware/sony)
 PRODUCT_SOONG_NAMESPACES += \
     $(wildcard hardware/xiaomi) \
-    $(wildcard vendor/xiaomi/*) \
-    $(wildcard vendor/qcom/opensource/usb/etc) \
-    $(wildcard kernel/xiaomi/*)
-endif
-
-# Sony-only namespaces
-ifeq ($(PRODUCT_MANUFACTURER),Sony)
-PRODUCT_SOONG_NAMESPACES += \
     $(wildcard hardware/sony) \
-    $(wildcard vendor/sony/*) \
-    $(wildcard device/sony/*-common) \
-    $(wildcard kernel/sony/*)
-endif
-
-# Google Pixel-only namespaces
-ifeq ($(PRODUCT_MANUFACTURER),Google)
-PRODUCT_SOONG_NAMESPACES += \
-    $(wildcard hardware/google/pixel) \
-    $(wildcard hardware/google/pixel-sepolicy) \
-    $(wildcard hardware/google/interfaces) \
-    $(wildcard vendor/google/*) \
-    $(wildcard device/google/*-sepolicy) \
-    $(wildcard kernel/google/*)
-endif
+    $(wildcard hardware/sony/*) \
+    $(wildcard hardware/google)
