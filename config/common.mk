@@ -302,26 +302,35 @@ include vendor/aetheria/config/version.mk
 -include $(WORKSPACE)/build_env/image-auto-bits.mk
 -include vendor/aetheria/config/partner_gms.mk
 
-# Common QCOM WiFi HAL soong namespaces 
 PRODUCT_SOONG_NAMESPACES += \
     hardware/qcom-caf/wlan \
     hardware/qcom-caf/wlan/qcwcn
 
-# Common namespaces for all devices (auto-detect if present)
-
+# Xiaomi-only namespaces
+ifeq ($(PRODUCT_MANUFACTURER),Xiaomi)
 PRODUCT_SOONG_NAMESPACES += \
     $(wildcard hardware/xiaomi) \
     $(wildcard vendor/xiaomi/*) \
-    $(wildcard vendor/qcom/opensource/usb/etc)
+    $(wildcard vendor/qcom/opensource/usb/etc) \
+    $(wildcard kernel/xiaomi/*)
+endif
 
+# Sony-only namespaces
+ifeq ($(PRODUCT_MANUFACTURER),Sony)
 PRODUCT_SOONG_NAMESPACES += \
     $(wildcard hardware/sony) \
     $(wildcard vendor/sony/*) \
-    $(wildcard device/sony/*-common)
+    $(wildcard device/sony/*-common) \
+    $(wildcard kernel/sony/*)
+endif
 
+# Google Pixel-only namespaces
+ifeq ($(PRODUCT_MANUFACTURER),Google)
 PRODUCT_SOONG_NAMESPACES += \
     $(wildcard hardware/google/pixel) \
     $(wildcard hardware/google/pixel-sepolicy) \
     $(wildcard hardware/google/interfaces) \
     $(wildcard vendor/google/*) \
-    $(wildcard device/google/*-sepolicy)
+    $(wildcard device/google/*-sepolicy) \
+    $(wildcard kernel/google/*)
+endif
