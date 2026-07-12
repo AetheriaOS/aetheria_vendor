@@ -306,3 +306,22 @@ include vendor/aetheria/config/version.mk
 PRODUCT_SOONG_NAMESPACES += \
     hardware/qcom-caf/wlan \
     hardware/qcom-caf/wlan/qcwcn
+
+# Common namespaces for all devices (auto-detect if present)
+
+PRODUCT_SOONG_NAMESPACES += \
+    $(wildcard hardware/xiaomi) \
+    $(wildcard vendor/xiaomi/*) \
+    $(wildcard vendor/qcom/opensource/usb/etc)
+
+PRODUCT_SOONG_NAMESPACES += \
+    $(wildcard hardware/sony) \
+    $(wildcard vendor/sony/*) \
+    $(wildcard device/sony/*-common)
+
+PRODUCT_SOONG_NAMESPACES += \
+    $(wildcard hardware/google/pixel) \
+    $(wildcard hardware/google/pixel-sepolicy) \
+    $(wildcard hardware/google/interfaces) \
+    $(wildcard vendor/google/*) \
+    $(wildcard device/google/*-sepolicy)
