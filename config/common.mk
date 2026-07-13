@@ -313,10 +313,3 @@ PRODUCT_SOONG_NAMESPACES += \
     $(wildcard vendor/*/$(TARGET_BOARD_PLATFORM)) \
     $(wildcard device/*/$(TARGET_BOARD_PLATFORM)-common)
 
-# Adaptive: match brand-level folders directly (e.g. hardware/xiaomi, hardware/sony)
-PRODUCT_SOONG_NAMESPACES += \
-    $(wildcard hardware/xiaomi) \
-    $(wildcard hardware/sony) \
-    $(wildcard hardware/sony/*) \
-    $(wildcard hardware/google)
-
