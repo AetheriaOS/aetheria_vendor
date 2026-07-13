@@ -1,15 +1,12 @@
-function aether()
+function bloom()
 {
-    T=$(gettop)
-    if [ -z "$T" ]; then
-        echo "Error: source build/envsetup.sh first"
+    local codename=$1
+    local variant=${2:-userdebug}
+
+    if [ -z "$codename" ]; then
+        echo "Usage: bloom <device-codename> [variant]"
         return 1
     fi
 
-    # Set device kalau ada argument
-    if [ -n "$1" ]; then
-        breakfast $1
-    fi
-
-    mka bacon
+    lunch aetheria_${codename}-bp4a-${variant}
 }
