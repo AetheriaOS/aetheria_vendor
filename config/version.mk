@@ -1,6 +1,8 @@
 PRODUCT_VERSION_MAJOR = 1
 PRODUCT_VERSION_MINOR = 0
 
+AETHERIA_BUILD := $(TARGET_DEVICE)
+
 ifeq ($(AETHERIA_VERSION_APPEND_TIME_OF_DAY),true)
     AETHERIA_BUILD_DATE := $(shell date -u +%Y%m%d_%H%M%S)
 else
@@ -11,7 +13,7 @@ endif
 AETHERIA_GITHUB_USER := $(shell ssh -T -o BatchMode=yes -o ConnectTimeout=5 git@github.com 2>&1 | /usr/bin/grep -oP '(?<=Hi ).*(?=!)')
 
 # Check against official devices JSON
-AETHERIA_OFFICIAL_JSON := $(shell /usr/bin/curl -sf --connect-timeout 5 https://raw.githubusercontent.com/AetheriaOS-Devices/aetheria_official_devices/main/$(AETHERIA_BUILD).json)
+AETHERIA_OFFICIAL_JSON := $(shell /usr/bin/curl -sf --connect-timeout 5 https://raw.githubusercontent.com/AetheriaOS-Devices/aetheria_official_devices/aetheria-1.0/$(AETHERIA_BUILD).json)
 
 AETHERIA_CHECK_USER := $(shell echo '$(AETHERIA_OFFICIAL_JSON)' | python3 -c "import sys,json; d=json.load(sys.stdin); print('match') if d.get('github_username')=='$(AETHERIA_GITHUB_USER)' else print('nomatch')" 2>/dev/null)
 
