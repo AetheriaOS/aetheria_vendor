@@ -306,10 +306,10 @@ PRODUCT_SOONG_NAMESPACES += \
     hardware/qcom-caf/wlan \
     hardware/qcom-caf/wlan/qcwcn
 
-# Adaptive: match chipset-named subfolders (any brand)
+ifneq ($(TARGET_BOARD_PLATFORM),)
 PRODUCT_SOONG_NAMESPACES += \
     $(wildcard hardware/*/$(TARGET_BOARD_PLATFORM)) \
     $(wildcard kernel/*/$(TARGET_BOARD_PLATFORM)) \
     $(wildcard vendor/*/$(TARGET_BOARD_PLATFORM)) \
     $(wildcard device/*/$(TARGET_BOARD_PLATFORM)-common)
-
+endif
