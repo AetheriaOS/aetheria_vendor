@@ -20,6 +20,7 @@ EXPORT_TO_SOONG := \
 
 $(call add_soong_config_namespace,lineageVarsPlugin)
 $(foreach v,$(EXPORT_TO_SOONG),$(eval $(call add_soong_config_var,lineageVarsPlugin,$(v))))
+$(warning DEBUG KERNEL_BUILD_OUT_PREFIX=[$(KERNEL_BUILD_OUT_PREFIX)] TARGET_KERNEL_PLATFORM_TARGET=[$(TARGET_KERNEL_PLATFORM_TARGET)])
 
 # Bootanimation
 TARGET_BOOTANIMATION_HALF_RES ?= false

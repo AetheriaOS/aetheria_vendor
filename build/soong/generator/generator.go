@@ -245,7 +245,7 @@ func (g *Module) GenerateAndroidBuildActions(ctx android.ModuleContext) {
 					return "", fmt.Errorf("unknown location label %q", label)
 				}
 			}
-			return "", fmt.Errorf("unknown variable '$(%s)'", name)
+			return "", nil
 		}
 	})
 
