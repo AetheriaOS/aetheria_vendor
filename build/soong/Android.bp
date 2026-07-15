@@ -1,5 +1,4 @@
 // LineageOS soong configs
-
 bootstrap_go_package {
     name: "soong-lineage-generator",
     pkgPath: "lineage/soong/generator",
@@ -17,24 +16,28 @@ bootstrap_go_package {
     ],
     pluginFor: ["soong_build"],
 }
-
-lineage_generator {
+soong_config_module_type {
+    name: "aetheria_lineage_generator",
+    module_type: "lineage_generator",
+    config_namespace: "aetheriaKernel",
+    value_variables: [
+        "KERNEL_BUILD_OUT_PREFIX",
+        "TARGET_KERNEL_PLATFORM_TARGET",
+    ],
+}
+aetheria_lineage_generator {
     name: "generated_kernel_includes",
-
-    // The headers make command
     cmd: "set -e; " +
-         "if [ -n \"$(TARGET_KERNEL_PLATFORM_TARGET)\" ]; then " +
+         "if [ -n \"$$(TARGET_KERNEL_PLATFORM_TARGET)\" ]; then " +
          "    pushd $(KERNEL_PATH); " +
-         "    ./tools/bazel --output_user_root=$(KERNEL_BUILD_OUT_PREFIX)$(genDir)/bazel-out --output_root=$(KERNEL_BUILD_OUT_PREFIX)$(genDir)/bazel-out run --experimental_convenience_symlinks=ignore --cpu=$(KERNEL_ARCH) //$(TARGET_KERNEL_SOURCE):$(TARGET_KERNEL_PLATFORM_TARGET)_uapi_headers_dist -- --destdir=$(KERNEL_BUILD_OUT_PREFIX)$(genDir); " +
+         "    ./tools/bazel --output_user_root=$$(KERNEL_BUILD_OUT_PREFIX)$(genDir)/bazel-out --output_root=$$(KERNEL_BUILD_OUT_PREFIX)$(genDir)/bazel-out run --experimental_convenience_symlinks=ignore --cpu=$(KERNEL_ARCH) //$(TARGET_KERNEL_SOURCE):$$(TARGET_KERNEL_PLATFORM_TARGET)_uapi_headers_dist -- --destdir=$$(KERNEL_BUILD_OUT_PREFIX)$(genDir); " +
          "    popd; " +
-         "    gzip -d $(KERNEL_BUILD_OUT_PREFIX)$(genDir)/kernel-uapi-headers.tar.gz; " +
-         "    tar -xf $(KERNEL_BUILD_OUT_PREFIX)$(genDir)/kernel-uapi-headers.tar -C $(KERNEL_BUILD_OUT_PREFIX)$(genDir); " +
+         "    gzip -d $$(KERNEL_BUILD_OUT_PREFIX)$(genDir)/kernel-uapi-headers.tar.gz; " +
+         "    tar -xf $$(KERNEL_BUILD_OUT_PREFIX)$(genDir)/kernel-uapi-headers.tar -C $$(KERNEL_BUILD_OUT_PREFIX)$(genDir); " +
          "else " +
-         "    $(PATH_OVERRIDE_SOONG) $(KERNEL_MAKE_CMD) $(KERNEL_MAKE_FLAGS) -C $(TARGET_KERNEL_SOURCE) O=$(KERNEL_BUILD_OUT_PREFIX)$(genDir) ARCH=$(KERNEL_ARCH) $(KERNEL_CROSS_COMPILE) headers_install; " +
+         "    $(PATH_OVERRIDE_SOONG) $(KERNEL_MAKE_CMD) $(KERNEL_MAKE_FLAGS) -C $(TARGET_KERNEL_SOURCE) O=$$(KERNEL_BUILD_OUT_PREFIX)$(genDir) ARCH=$(KERNEL_ARCH) $(KERNEL_CROSS_COMPILE) headers_install; " +
          "fi; " +
-         "vendor/lineage/tools/clean_headers.sh $(KERNEL_BUILD_OUT_PREFIX)$(genDir)",
-
-    // Directories that can be imported by a cc_* module generated_headers property
+         "vendor/aetheria/tools/clean_headers.sh $$(KERNEL_BUILD_OUT_PREFIX)$(genDir)",
     export_include_dirs: [
         "usr/audio/include/uapi",
         "usr/include",
@@ -42,8 +45,6 @@ lineage_generator {
         "usr/include/audio/include/uapi",
         "usr/techpack/audio/include",
     ],
-
-    // Sources for dependency tracking
     dep_root: "$(TARGET_KERNEL_SOURCE)",
     dep_files: [
         "Makefile",
@@ -52,14 +53,10 @@ lineage_generator {
         "techpack/audio/include/**/*",
     ],
 }
-
-lineage_generator {
+aetheria_lineage_generator {
     name: "prebuilt_kernel_includes",
-
-    // The headers extract command
-    cmd: "mkdir -p $(KERNEL_BUILD_OUT_PREFIX)$(genDir) && gzip -d < $(TARGET_PREBUILT_KERNEL_HEADERS) | tar -x -C $(KERNEL_BUILD_OUT_PREFIX)$(genDir) && vendor/lineage/tools/clean_headers.sh $(KERNEL_BUILD_OUT_PREFIX)$(genDir)",
-
-    // Directories that can be imported by a cc_* module generated_headers property
+    cmd: "mkdir -p $$(KERNEL_BUILD_OUT_PREFIX)$(genDir) && gzip -d < $(TARGET_PREBUILT_KERNEL_HEADERS) |\n" +
+         "tar -x -C $$(KERNEL_BUILD_OUT_PREFIX)$(genDir) && vendor/aetheria/tools/clean_headers.sh $$(KERNEL_BUILD_OUT_PREFIX)$(genDir)",
     export_include_dirs: [
         "usr/audio/include/uapi",
         "usr/include",
@@ -68,7 +65,6 @@ lineage_generator {
         "usr/techpack/audio/include",
     ],
 }
-
 bootstrap_go_package {
     name: "soong-lineage-mkdir",
     pkgPath: "lineage/soong/mkdir",
@@ -84,7 +80,6 @@ bootstrap_go_package {
     ],
     pluginFor: ["soong_build"],
 }
-
 cc_defaults {
     name: "generated_kernel_header_defaults",
     generated_headers: ["generated_kernel_includes"],
@@ -92,7 +87,6 @@ cc_defaults {
     vendor_available: true,
     recovery_available: true,
 }
-
 cc_defaults {
     name: "prebuilt_kernel_header_defaults",
     generated_headers: ["prebuilt_kernel_includes"],
@@ -100,12 +94,10 @@ cc_defaults {
     vendor_available: true,
     recovery_available: true,
 }
-
 cc_library_headers {
     name: "generated_kernel_headers",
     defaults: ["generated_kernel_header_defaults"],
 }
-
 cc_library_headers {
     name: "prebuilt_kernel_headers",
     defaults: ["prebuilt_kernel_header_defaults"],
