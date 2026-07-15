@@ -102,7 +102,7 @@ else
     # Use the default version of clang if TARGET_KERNEL_CLANG_VERSION hasn't been set by the device config
     KERNEL_CLANG_VERSION := $(LLVM_AOSP_PREBUILTS_VERSION)
 endif
-TARGET_KERNEL_CLANG_PATH ?= $(BUILD_TOP)/prebuilts/clang/host/$(HOST_PREBUILT_TAG)/$(KERNEL_CLANG_VERSION)
+TARGET_KERNEL_CLANG_PATH := /home/n1709/AetheriaOS/prebuilts/clang/host/linux-x86/clang-r574158
 
 TARGET_KERNEL_RUST_VERSION ?= $(RUST_AOSP_PREBUILTS_VERSION)
 

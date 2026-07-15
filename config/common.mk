@@ -312,3 +312,4 @@ PRODUCT_SOONG_NAMESPACES += \
     $(wildcard vendor/*/$(TARGET_BOARD_PLATFORM)) \
     $(wildcard device/*/$(TARGET_BOARD_PLATFORM)-common)
 endif
+PRODUCT_PACKAGE_OVERLAYS += vendor/aetheria/overlay
