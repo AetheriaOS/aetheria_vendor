@@ -19,10 +19,17 @@ bootstrap_go_package {
 soong_config_module_type {
     name: "aetheria_lineage_generator",
     module_type: "lineage_generator",
-    config_namespace: "aetheriaKernel",
+    config_namespace: "lineageVarsPlugin",
     value_variables: [
         "KERNEL_BUILD_OUT_PREFIX",
         "TARGET_KERNEL_PLATFORM_TARGET",
+        "KERNEL_PATH",
+        "KERNEL_ARCH",
+        "TARGET_KERNEL_SOURCE",
+        "PATH_OVERRIDE_SOONG",
+        "KERNEL_MAKE_CMD",
+        "KERNEL_MAKE_FLAGS",
+        "KERNEL_CROSS_COMPILE",
     ],
 }
 aetheria_lineage_generator {
