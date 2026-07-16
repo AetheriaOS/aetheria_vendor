@@ -128,7 +128,7 @@ TARGET_KERNEL_MIXED_MODE ?= true
 COLLECT_MODULE_DEPS_CMD := python3 $(BUILD_TOP)/lineage/scripts/collect-kernel-module-deps/collect-kernel-module-deps.py --non-interactive
 DTC := $(HOST_OUT_EXECUTABLES)/dtc
 KERNEL_OUT := $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ
-KERNEL_MAKE_CMD := make
+KERNEL_MAKE_CMD := $(BUILD_TOP)/prebuilts/build-tools/linux-x86/bin/make
 DTBO_OUT := $(TARGET_OUT_INTERMEDIATES)/DTBO_OBJ
 DTB_OUT := $(TARGET_OUT_INTERMEDIATES)/DTB_OBJ
 ifeq ($(BOARD_USES_QCOM_MERGE_DTBS_SCRIPT),true)
@@ -277,6 +277,7 @@ ifneq ($(KERNEL_NO_GCC), true)
 endif
 
 # System tools are no longer allowed on 10+
+PATH_OVERRIDE += PATH=$(BUILD_TOP)/prebuilts/gcc-host/bin:$$PATH
 PATH_OVERRIDE += $(TOOLS_PATH_OVERRIDE)
 
 ifeq (true,$(filter true, $(TARGET_NEEDS_DTBOIMAGE) $(BOARD_KERNEL_SEPARATED_DTBO)))
@@ -317,11 +318,11 @@ define make-kernel-config
 	cp $(word 1,$(2)) $(1)/.config; \
 	$(call internal-make-kernel-target,$(1),olddefconfig); \
 	$(if $(filter true,$(MERGE_ALL_KERNEL_CONFIGS_AT_ONCE)),\
-		$(KERNEL_SRC)/scripts/kconfig/merge_config.sh -m -O $(1) $(1)/.config $(filter %.config,$(2)); \
+		MAKE=$(BUILD_TOP)/prebuilts/build-tools/linux-x86/bin/make $(KERNEL_SRC)/scripts/kconfig/merge_config.sh -m -O $(1) $(1)/.config $(filter %.config,$(2)); \
 		$(call internal-make-kernel-target,$(1),olddefconfig); \
 	, \
 		$(foreach config,$(filter %.config,$(2)), \
-			$(KERNEL_SRC)/scripts/kconfig/merge_config.sh -m -O $(1) $(1)/.config $(config); \
+			MAKE=$(BUILD_TOP)/prebuilts/build-tools/linux-x86/bin/make $(KERNEL_SRC)/scripts/kconfig/merge_config.sh -m -O $(1) $(1)/.config $(config); \
 			$(call internal-make-kernel-target,$(1),olddefconfig); \
 		) \
 	)
